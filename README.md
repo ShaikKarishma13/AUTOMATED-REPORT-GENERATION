@@ -75,3 +75,4 @@ This project is an excellent example of how Python can be used to automate data 
 OUTPUT:
 ![Image](https://github.com/user-attachments/assets/43e72fe6-5d27-4711-84a9-c50ebecba3dc)
 ![Image](https://github.com/user-attachments/assets/7def9859-9bad-41e6-b5a4-7e108cb4c4c6)
+![Image](https://github.com/user-attachments/assets/8fe2e616-6666-4896-8fac-a52d9398bde4)
