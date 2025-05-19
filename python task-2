@@ -1,0 +1,90 @@
+# Install required libraries
+!pip install fpdf pandas
+
+# Import necessary libraries
+import pandas as pd
+from fpdf import FPDF
+from google.colab import files
+import zipfile
+import os
+
+# Upload ZIP file
+uploaded = files.upload()
+zip_file = list(uploaded.keys())[0]
+
+# Unzip the file
+extract_dir = "unzipped_csv"
+with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+    zip_ref.extractall(extract_dir)
+
+# Recursively search for the first CSV file
+csv_path = None
+for root, dirs, files_in_dir in os.walk(extract_dir):
+    for file in files_in_dir:
+        if file.endswith(".csv"):
+            csv_path = os.path.join(root, file)
+            break
+    if csv_path:
+        break
+
+# Check if CSV file was found
+if not csv_path:
+    raise FileNotFoundError("No CSV file found in the ZIP archive.")
+
+# Load CSV
+df = pd.read_csv(csv_path)
+
+# Debugging: Check the first few rows of the DataFrame
+print("DataFrame Preview:")
+print(df.head())
+
+# Check if the DataFrame is empty
+if df.empty:
+    raise ValueError("The CSV file is empty or couldn't be read properly.")
+
+# Generate summary statistics
+summary = df.describe().round(2)
+
+# Debugging: Check the summary statistics
+print("Summary Statistics:")
+print(summary)
+
+# Define PDF Report class
+class PDFReport(FPDF):
+    def header(self):
+        self.set_font("Arial", "B", 16)
+        self.cell(200, 10, "Automated Data Report", ln=True, align="C")
+        self.ln(10)
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font("Arial", "I", 8)
+        self.cell(0, 10, f"Page {self.page_no()}", 0, 0, "C")
+
+    def add_summary_table(self, summary_df):
+        self.set_font("Arial", size=10)
+        col_width = self.w / (len(summary_df.columns) + 1)
+        row_height = 10
+
+        # Column headers
+        self.set_fill_color(200, 220, 255)
+        self.cell(col_width, row_height, "Metric", border=1, fill=True)
+        for col in summary_df.columns:
+            self.cell(col_width, row_height, str(col), border=1, fill=True)
+        self.ln()
+
+        # Data rows
+        for idx, row in summary_df.iterrows():
+            self.cell(col_width, row_height, str(idx), border=1)
+            for item in row:
+                self.cell(col_width, row_height, str(item), border=1)
+            self.ln()
+
+# Create PDF
+pdf = PDFReport()
+pdf.add_page()
+pdf.add_summary_table(summary)
+pdf.output("data_report.pdf")
+
+# Download the PDF
+files.download("data_report.pdf")
