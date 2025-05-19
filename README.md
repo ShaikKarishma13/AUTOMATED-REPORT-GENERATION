@@ -71,3 +71,6 @@ Working on this project provided hands-on experience with:
 - Delivering outputs that are not only analytically valuable but also presentable and portable.
 
 This project is an excellent example of how Python can be used to automate data workflows, from raw input to final report generation, making it highly useful for students, professionals, and analysts alike.
+
+OUTPUT:
+![Image](https://github.com/user-attachments/assets/43e72fe6-5d27-4711-84a9-c50ebecba3dc)
