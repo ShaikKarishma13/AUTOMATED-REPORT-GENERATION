@@ -7,7 +7,7 @@
 *DURATION:* 6 WEEKS  
 *MENTOR:* NEELA SANTOSH
 
-## Overview
+##Project Overview
 
 This project is centered around automating the process of data extraction, analysis, and reporting using Python. The main goal of the task is to accept a ZIP file uploaded by the user (which contains CSV data), analyze it using pandas, and generate a well-structured PDF report using FPDF. This end-to-end pipeline is especially useful for quick analysis and summarization of datasets, providing a user-friendly output in the form of a portable document that can be shared or archived.
 
